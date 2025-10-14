@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cookie Guard - Simple Cookie Choices</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+        }
+        .test-container {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .simple-explanation {
+            background: #dbeafe;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #3b82f6;
+            margin: 15px 0;
+        }
+        .instructions {
+            background: #fef3c7;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #f59e0b;
+            margin-bottom: 20px;
+        }
+        .cookie-preview {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .cookie-example {
+            background: #f8fafc;
+            padding: 15px;
+            border-radius: 8px;
+            border: 2px solid #e2e8f0;
+            position: relative;
+        }
+        .choice-demo {
+            display: flex;
+            gap: 8px;
+            margin-top: 10px;
+            justify-content: center;
+        }
+        .demo-btn {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+        .demo-accept {
+            background: #10b981;
+            color: white;
+        }
+        .demo-reject {
+            background: #ef4444;
+            color: white;
+        }
+        .demo-disabled {
+            background: #9ca3af;
+            color: white;
+            opacity: 0.5;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>🍪 Cookie Guard - Simplified Cookie Choices</h1>
+        <div class="instructions">
+            <h3>✨ Now Simple & Clear!</h3>
+            <p><strong>No more confusion - just simple Accept or Reject choices for each cookie!</strong></p>
+            <ol>
+                <li>Open Cookie Guard extension popup</li>
+                <li>Click "Scan Current Page" to see cookies</li>
+                <li>For each cookie, simply click <strong>✅ Accept</strong> or <strong>❌ Reject</strong></li>
+                <li>Click <strong>"Apply My Choices"</strong> when done</li>
+            </ol>
+        </div>
+    </div>
+
+    <div class="test-container">
+        <h2>🎯 What You'll See</h2>
+        <div class="simple-explanation">
+            <h4>Clean & Simple Interface</h4>
+            <p>Each cookie now shows:</p>
+            <ul>
+                <li><strong>Cookie name</strong> and <strong>risk level</strong></li>
+                <li><strong>Risk score bar</strong> (0-100 scale)</li>
+                <li><strong>Two simple buttons:</strong> ✅ Accept or ❌ Reject</li>
+                <li><strong>One action button:</strong> "Apply My Choices"</li>
+            </ul>
+        </div>
+
+        <div class="cookie-preview">
+            <div class="cookie-example">
+                <h4>🔐 sessionid</h4>
+                <div style="font-size: 12px; color: #666; margin: 8px 0;">
+                    Risk Score: ████████░░ 82/100 • 🚨 Critical
+                </div>
+                <p style="font-size: 12px; margin: 8px 0;">Essential for login - cannot be rejected</p>
+                <div class="choice-demo">
+                    <button class="demo-btn demo-accept">✅ Accept</button>
+                    <button class="demo-btn demo-disabled">❌ Reject</button>
+                </div>
+            </div>
+
+            <div class="cookie-example">
+                <h4>📊 _ga</h4>
+                <div style="font-size: 12px; color: #666; margin: 8px 0;">
+                    Risk Score: ██████░░░░ 64/100 • ⚠️ High
+                </div>
+                <p style="font-size: 12px; margin: 8px 0;">Google Analytics tracking - your choice</p>
+                <div class="choice-demo">
+                    <button class="demo-btn demo-accept">✅ Accept</button>
+                    <button class="demo-btn demo-reject">❌ Reject</button>
+                </div>
+            </div>
+
+            <div class="cookie-example">
+                <h4>⚙️ user_pref</h4>
+                <div style="font-size: 12px; color: #666; margin: 8px 0;">
+                    Risk Score: ███░░░░░░░ 28/100 • ℹ️ Medium
+                </div>
+                <p style="font-size: 12px; margin: 8px 0;">Stores your preferences - helpful but optional</p>
+                <div class="choice-demo">
+                    <button class="demo-btn demo-accept">✅ Accept</button>
+                    <button class="demo-btn demo-reject">❌ Reject</button>
+                </div>
+            </div>
+
+            <div class="cookie-example">
+                <h4>🔒 _csrf_token</h4>
+                <div style="font-size: 12px; color: #666; margin: 8px 0;">
+                    Risk Score: ██░░░░░░░░ 19/100 • ✅ Low
+                </div>
+                <p style="font-size: 12px; margin: 8px 0;">Security protection - recommended to accept</p>
+                <div class="choice-demo">
+                    <button class="demo-btn demo-accept">✅ Accept</button>
+                    <button class="demo-btn demo-reject">❌ Reject</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="test-container">
+        <h2>🎨 Key Improvements</h2>
+        <div class="simple-explanation">
+            <h4>✅ What's Better Now</h4>
+            <ul>
+                <li><strong>No confusing bulk actions</strong> - just simple choices per cookie</li>
+                <li><strong>Clear Accept/Reject buttons</strong> - no checkboxes to understand</li>
+                <li><strong>Essential cookies protected</strong> - can't accidentally break website</li>
+                <li><strong>One simple action</strong> - "Apply My Choices" does everything</li>
+                <li><strong>Visual feedback</strong> - buttons highlight when clicked</li>
+                <li><strong>Less cognitive load</strong> - focus on individual cookie decisions</li>
+            </ul>
+        </div>
+
+        <div class="simple-explanation">
+            <h4>🎯 How It Works</h4>
+            <ol>
+                <li><strong>Scan cookies</strong> - Click scan to see all cookies on the page</li>
+                <li><strong>Make choices</strong> - Click Accept or Reject for each cookie</li>
+                <li><strong>Essential cookies</strong> - Pre-selected and protected (Accept only)</li>
+                <li><strong>Apply choices</strong> - One button applies all your decisions</li>
+                <li><strong>Confirmation</strong> - Simple summary before changes are made</li>
+            </ol>
+        </div>
+    </div>
+
+    <div class="test-container">
+        <h2>🧪 Test Cookies</h2>
+        <div id="cookie-status">Setting up simple test cookies...</div>
+    </div>
+
+    <script>
+        // Set simple test cookies for demonstration
+        const testCookies = [
+            // Essential authentication cookie
+            { name: 'sessionid', value: 'abc123session789', essential: true },
+            
+            // Analytics tracking
+            { name: '_ga', value: 'GA1.2.1234567890.1638360000', essential: false },
+            
+            // User preferences  
+            { name: 'user_pref', value: 'theme:dark,lang:en', essential: false },
+            
+            // CSRF protection
+            { name: '_csrf_token', value: 'xyz789csrf123', essential: true },
+            
+            // Shopping cart
+            { name: 'cart', value: 'item123,item456', essential: false },
+            
+            // Facebook tracking
+            { name: '_fbp', value: 'fb.1.1640123456.987654321', essential: false }
+        ];
+
+        // Set cookies
+        testCookies.forEach(cookie => {
+            document.cookie = `${cookie.name}=${cookie.value}; path=/`;
+        });
+
+        // Update status
+        document.getElementById('cookie-status').innerHTML = `
+            <div style="color: #059669; font-weight: bold; margin-bottom: 10px;">
+                ✅ ${testCookies.length} test cookies created!
+            </div>
+            <div style="background: #f0fdf4; padding: 10px; border-radius: 6px; border-left: 4px solid #10b981;">
+                <strong>Perfect for testing the simplified interface!</strong>
+                <br><br>
+                <strong>What you'll see:</strong>
+                <ul style="margin: 8px 0;">
+                    <li>🔐 2 essential cookies (pre-selected, cannot reject)</li>
+                    <li>📊 4 optional cookies (your choice to accept or reject)</li>
+                    <li>✅ Simple Accept/Reject buttons for each</li>
+                    <li>🎯 One "Apply My Choices" button to confirm</li>
+                </ul>
+            </div>
+        `;
+
+        console.log("🍪 Simplified Cookie Choice test environment ready!");
+        console.log("✨ Much cleaner and less confusing interface!");
+    </script>
+</body>
+</html>

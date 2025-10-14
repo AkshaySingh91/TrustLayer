@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cookie Guard Error Fix Test</title>
+</head>
+<body>
+    <h1>🍪 Cookie Guard Error Fix Test</h1>
+    <p>This page tests that the ReferenceError has been fixed.</p>
+    
+    <button onclick="setTestCookies()">Set Test Cookies</button>
+    <button onclick="showCookies()">Show Current Cookies</button>
+    
+    <div id="status"></div>
+
+    <script>
+        function setTestCookies() {
+            // Set a variety of cookies to test the classification
+            document.cookie = "test_auth_token=abc123; path=/";
+            document.cookie = "_ga=GA1.2.123456789; path=/";
+            document.cookie = "unknown_cookie_xyz=mysterious_value; path=/";
+            document.cookie = "session_id=sess_abc123; path=/";
+            document.cookie = "ad_tracking=marketing_xyz; path=/";
+            
+            document.getElementById('status').innerHTML = "✅ Test cookies set! Now open Cookie Guard extension and scan this page.";
+        }
+        
+        function showCookies() {
+            const cookies = document.cookie.split(';');
+            document.getElementById('status').innerHTML = 
+                "<h3>Current Cookies:</h3>" + 
+                cookies.map(c => c.trim()).join('<br>');
+        }
+        
+        // Auto-set a basic cookie for testing
+        document.cookie = "page_visit=error_fix_test; path=/";
+    </script>
+</body>
+</html>

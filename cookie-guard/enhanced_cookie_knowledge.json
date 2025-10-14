@@ -1,0 +1,148 @@
+{
+  "cookie_explanations": {
+    "_ga": {
+      "category": "Analytics",
+      "purpose": "Google Analytics tracking cookie that monitors user behavior on websites",
+      "risk_level": "Medium",
+      "data_collected": ["Page views", "User interactions", "Browser information", "IP address", "Device type"],
+      "privacy_risk": "Tracks your browsing patterns across multiple websites. Can build detailed profile of your interests and habits.",
+      "security_risk": "Low - Does not contain login credentials or sensitive personal data",
+      "user_friendly_explanation": "This cookie helps websites understand how visitors use their site, like which pages are popular. It doesn't access your passwords or personal accounts.",
+      "why_used": "Website owners use this to improve their site design and content based on visitor behavior",
+      "can_be_blocked": true,
+      "essential": false
+    },
+    "_gid": {
+      "category": "Analytics", 
+      "purpose": "Google Analytics session identifier for distinguishing users",
+      "risk_level": "Medium",
+      "data_collected": ["Session information", "User identification", "Timestamp"],
+      "privacy_risk": "Creates unique identifier to track your visit session. Links your activities during a single browsing session.",
+      "security_risk": "Low - Session identifier only, no sensitive data stored",
+      "user_friendly_explanation": "This helps Google Analytics tell different website visitors apart during the same day. It's like a temporary visitor number.",
+      "why_used": "Helps websites count unique visitors and understand daily traffic patterns",
+      "can_be_blocked": true,
+      "essential": false
+    },
+    "_fbp": {
+      "category": "Marketing",
+      "purpose": "Facebook Pixel tracking cookie for advertising and conversion tracking",
+      "risk_level": "High",
+      "data_collected": ["Browsing behavior", "Ad interactions", "Purchase activities", "Facebook profile data", "Cross-site tracking"],
+      "privacy_risk": "HIGH PRIVACY RISK: Connects your browsing to your Facebook profile. Tracks you across many websites for targeted advertising.",
+      "security_risk": "Medium - While not containing passwords, it can reveal personal interests and potentially sensitive browsing patterns",
+      "user_friendly_explanation": "This cookie connects your website visits to your Facebook account for targeted advertising. Facebook learns what websites you visit and what you're interested in buying.",
+      "why_used": "Businesses use this to show you relevant ads on Facebook and measure if their ads lead to sales",
+      "can_be_blocked": true,
+      "essential": false,
+      "warning": "⚠️ PRIVACY ALERT: This cookie significantly impacts your privacy by creating detailed profiles for advertising"
+    },
+    "sessionid": {
+      "category": "Session Management",
+      "purpose": "Maintains user session state and login status",
+      "risk_level": "High",
+      "data_collected": ["User login status", "Session state", "User permissions"],
+      "privacy_risk": "Medium - Contains session information but not raw credentials",
+      "security_risk": "HIGH SECURITY RISK: If stolen, attacker could impersonate you on this website until session expires",
+      "user_friendly_explanation": "This cookie keeps you logged in to the website. It's like a temporary key that proves you've already entered your password.",
+      "why_used": "Essential for keeping you logged in as you navigate between pages on the website",
+      "can_be_blocked": false,
+      "essential": true,
+      "warning": "🔒 SECURITY CRITICAL: Blocking this will log you out. If compromised, someone could access your account temporarily",
+      "security_advice": "Always log out on shared computers. This cookie should only work on secure (HTTPS) websites."
+    },
+    "authToken": {
+      "category": "Authentication",
+      "purpose": "Authentication token for API access and user verification",
+      "risk_level": "Critical",
+      "data_collected": ["User authentication state", "API access permissions", "User identity verification"],
+      "privacy_risk": "High - Contains authentication information that identifies you",
+      "security_risk": "CRITICAL SECURITY RISK: Direct access token. If stolen, attacker has full access to your account and data",
+      "user_friendly_explanation": "This is like your digital ID card for this website. It proves who you are without needing to enter your password every time.",
+      "why_used": "Allows secure communication between your browser and the website's servers without repeatedly asking for passwords",
+      "can_be_blocked": false,
+      "essential": true,
+      "warning": "🚨 CRITICAL SECURITY: This cookie contains authentication data. Never share or allow untrusted access to this",
+      "security_advice": "Only use on HTTPS sites. Log out when done. Never access accounts on public/shared computers."
+    },
+    "csrftoken": {
+      "category": "Security",
+      "purpose": "Cross-Site Request Forgery protection token",
+      "risk_level": "Low",
+      "data_collected": ["CSRF protection token"],
+      "privacy_risk": "None - Security measure only",
+      "security_risk": "PROTECTIVE: This cookie actually protects your security by preventing malicious websites from performing actions on your behalf",
+      "user_friendly_explanation": "This is a security guard cookie that protects you from malicious websites trying to trick your browser into doing things without your permission.",
+      "why_used": "Prevents hackers from tricking your browser into performing actions (like transferring money) on websites where you're logged in",
+      "can_be_blocked": false,
+      "essential": true,
+      "security_benefit": "✅ SECURITY PROTECTION: This cookie helps protect your accounts from certain types of attacks"
+    },
+    "ads_user": {
+      "category": "Marketing",
+      "purpose": "User identifier for advertising personalization and tracking",
+      "risk_level": "High",
+      "data_collected": ["User advertising profile", "Ad interaction history", "Demographic inferences", "Interest categories"],
+      "privacy_risk": "HIGH PRIVACY RISK: Creates detailed advertising profile. May infer sensitive information about lifestyle, health, finances",
+      "security_risk": "Medium - Could reveal personal interests that might be used for social engineering attacks",
+      "user_friendly_explanation": "This cookie builds a detailed profile of your interests for advertising. Companies learn what you like, buy, and might need.",
+      "why_used": "Shows you ads that are more relevant to your interests instead of random advertisements",
+      "can_be_blocked": true,
+      "essential": false,
+      "warning": "⚠️ PRIVACY IMPACT: Your browsing creates a detailed profile used for targeted advertising across many websites"
+    }
+  },
+  "risk_categories": {
+    "Critical": {
+      "description": "Contains authentication data or direct access to accounts",
+      "icon": "🚨",
+      "color": "#dc2626",
+      "user_warning": "CRITICAL: These cookies can give attackers direct access to your accounts if compromised"
+    },
+    "High": {
+      "description": "Significant privacy impact or security concerns",
+      "icon": "⚠️", 
+      "color": "#ea580c",
+      "user_warning": "HIGH RISK: These cookies significantly impact your privacy or could pose security risks"
+    },
+    "Medium": {
+      "description": "Moderate tracking or data collection",
+      "icon": "ℹ️",
+      "color": "#ca8a04", 
+      "user_warning": "MEDIUM: These cookies track your behavior but don't access sensitive accounts"
+    },
+    "Low": {
+      "description": "Minimal privacy impact, often functional",
+      "icon": "✅",
+      "color": "#16a34a",
+      "user_warning": "LOW RISK: These cookies have minimal privacy impact and may be necessary for website function"
+    }
+  },
+  "general_cookie_patterns": {
+    "session": {
+      "keywords": ["session", "sess", "phpsessid", "jsessionid"],
+      "default_risk": "High",
+      "explanation": "Session cookies keep you logged in but can be hijacked by attackers"
+    },
+    "auth": {
+      "keywords": ["auth", "token", "login", "user", "account"],
+      "default_risk": "Critical", 
+      "explanation": "Authentication cookies provide access to your account - highest security risk if compromised"
+    },
+    "tracking": {
+      "keywords": ["_ga", "_gid", "track", "_utm", "analytics"],
+      "default_risk": "Medium",
+      "explanation": "Tracking cookies monitor your behavior across websites for analytics or advertising"
+    },
+    "advertising": {
+      "keywords": ["ad", "marketing", "_fbp", "doubleclick", "campaign"],
+      "default_risk": "High",
+      "explanation": "Advertising cookies create detailed profiles for targeted marketing and cross-site tracking"
+    },
+    "security": {
+      "keywords": ["csrf", "xsrf", "security", "secure"],
+      "default_risk": "Low",
+      "explanation": "Security cookies protect you from attacks - generally safe and beneficial"
+    }
+  }
+}

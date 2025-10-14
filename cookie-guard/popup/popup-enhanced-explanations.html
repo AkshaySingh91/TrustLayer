@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Cookie Guard - Enhanced Security Analysis</title>
+    <link rel="stylesheet" href="popup-enhanced-explanations.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>🍪🛡️ Cookie Guard</h1>
+      <div class="subtitle">Security & Privacy Analysis</div>
+      
+      <div class="controls">
+        <button id="scanBtn">🔍 Scan Current Page</button>
+        <button id="settingsBtn">⚙️ Settings</button>
+      </div>
+
+      <div class="risk-summary" id="riskSummary" style="display: none;">
+        <div class="risk-summary-header">
+          <h3>📊 Risk Assessment Summary</h3>
+          <button class="info-btn" id="riskMethodologyBtn" title="How we calculate risk">ℹ️</button>
+        </div>
+        <div class="risk-stats">
+          <div class="risk-stat critical">
+            <span class="risk-icon">🚨</span>
+            <span class="risk-count" id="criticalCount">0</span>
+            <span class="risk-label">Critical</span>
+            <span class="risk-range">(85-100)</span>
+          </div>
+          <div class="risk-stat high">
+            <span class="risk-icon">⚠️</span>
+            <span class="risk-count" id="highCount">0</span>
+            <span class="risk-label">High Risk</span>
+            <span class="risk-range">(65-84)</span>
+          </div>
+          <div class="risk-stat medium">
+            <span class="risk-icon">ℹ️</span>
+            <span class="risk-count" id="mediumCount">0</span>
+            <span class="risk-label">Medium</span>
+            <span class="risk-range">(35-64)</span>
+          </div>
+          <div class="risk-stat low">
+            <span class="risk-icon">✅</span>
+            <span class="risk-count" id="lowCount">0</span>
+            <span class="risk-label">Low Risk</span>
+            <span class="risk-range">(0-34)</span>
+          </div>
+        </div>
+        
+        <!-- Risk Methodology Modal -->
+        <div class="risk-methodology" id="riskMethodology" style="display: none;">
+          <div class="methodology-content">
+            <div class="methodology-header">
+              <h4>🧮 How We Calculate Cookie Risk</h4>
+              <button class="close-btn" id="closeMethodology">×</button>
+            </div>
+            <div class="methodology-body">
+              <div class="risk-factor">
+                <div class="factor-header">
+                  <span class="factor-icon">🔐</span>
+                  <span class="factor-name">Authentication Risk</span>
+                  <span class="factor-weight">40%</span>
+                </div>
+                <p class="factor-description">Evaluates if cookie contains session IDs, login tokens, or credentials that could be hijacked</p>
+              </div>
+              <div class="risk-factor">
+                <div class="factor-header">
+                  <span class="factor-icon">👁️</span>
+                  <span class="factor-name">Tracking Risk</span>
+                  <span class="factor-weight">25%</span>
+                </div>
+                <p class="factor-description">Measures cross-site tracking, analytics, and advertising data collection</p>
+              </div>
+              <div class="risk-factor">
+                <div class="factor-header">
+                  <span class="factor-icon">⏱️</span>
+                  <span class="factor-name">Persistence Risk</span>
+                  <span class="factor-weight">15%</span>
+                </div>
+                <p class="factor-description">Analyzes cookie lifetime and long-term data storage implications</p>
+              </div>
+              <div class="risk-factor">
+                <div class="factor-header">
+                  <span class="factor-icon">🔒</span>
+                  <span class="factor-name">Security Flags</span>
+                  <span class="factor-weight">10%</span>
+                </div>
+                <p class="factor-description">Checks for secure, HttpOnly, and SameSite security protections</p>
+              </div>
+              <div class="risk-factor">
+                <div class="factor-header">
+                  <span class="factor-icon">📊</span>
+                  <span class="factor-name">Data Exposure</span>
+                  <span class="factor-weight">10%</span>
+                </div>
+                <p class="factor-description">Examines cookie value patterns and potential sensitive data exposure</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="cookie-list" id="cookieList">
+        <div class="welcome-message">
+          <h3>🔍 Cookie Security Scanner</h3>
+          <p>Click "Scan Current Page" to analyze cookies and understand their security and privacy implications.</p>
+          <div class="features">
+            <div class="feature">
+              <span class="feature-icon">🚨</span>
+              <span>Identifies authentication risks</span>
+            </div>
+            <div class="feature">
+              <span class="feature-icon">🔒</span>
+              <span>Explains login credential safety</span>
+            </div>
+            <div class="feature">
+              <span class="feature-icon">👁️</span>
+              <span>Reveals privacy tracking</span>
+            </div>
+            <div class="feature">
+              <span class="feature-icon">📚</span>
+              <span>Educational explanations</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="cookie-management" id="cookieManagement" style="display: none;">
+        <div class="management-header">
+          <h3>� Choose Your Cookies</h3>
+          <div class="simple-instruction">
+            Accept or reject individual cookies based on your privacy preferences
+          </div>
+        </div>
+        
+        <div class="apply-choices">
+          <button id="applyChoices" class="apply-btn">✅ Apply My Choices</button>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button id="acceptEssential">✅ Accept Essential Only</button>
+        <button id="acceptAll">⚠️ Accept All</button>
+      </div>
+
+      <div class="educational-footer">
+        <div class="tip">
+          💡 <strong>Tip:</strong> Critical and High-risk cookies may expose login credentials or personal data if compromised.
+        </div>
+      </div>
+    </div>
+    <script src="popup-enhanced-explanations.js"></script>
+  </body>
+</html>

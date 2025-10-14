@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test ML Models - Terms AI Extension</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .test-container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 10px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .status {
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+            font-weight: bold;
+        }
+        .loading { background: #fff3cd; color: #856404; }
+        .success { background: #d4edda; color: #155724; }
+        .error { background: #f8d7da; color: #721c24; }
+        button {
+            background: #007cba;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover { background: #005a8b; }
+        button:disabled { background: #ccc; cursor: not-allowed; }
+        .log {
+            background: #f8f9fa;
+            padding: 15px;
+            border-left: 4px solid #007cba;
+            margin: 10px 0;
+            font-family: monospace;
+            font-size: 12px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .progress {
+            width: 100%;
+            height: 20px;
+            background: #e9ecef;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #007cba, #0056b3);
+            transition: width 0.3s ease;
+        }
+        .test-text {
+            width: 100%;
+            height: 120px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            resize: vertical;
+        }
+    </style>
+</head>
+<body>
+    <h1>🤖 ML Models Test Suite</h1>
+    <p>Test the local AI models for the Terms AI Extension</p>
+
+    <div class="test-container">
+        <h3>🔧 Extension Status</h3>
+        <div id="extension-status" class="status loading">Checking extension...</div>
+        <button onclick="checkExtension()">Check Extension</button>
+        <button onclick="reloadExtension()">Reload Extension</button>
+    </div>
+
+    <div class="test-container">
+        <h3>📊 Model Loading Progress</h3>
+        <div id="model-status" class="status loading">Checking models...</div>
+        <div class="progress">
+            <div id="progress-bar" class="progress-bar" style="width: 0%"></div>
+        </div>
+        <button onclick="initializeModels()">Initialize Models</button>
+        <button onclick="checkModelStatus()">Check Status</button>
+    </div>
+
+    <div class="test-container">
+        <h3>🧪 Test Analysis</h3>
+        <textarea id="test-text" class="test-text" placeholder="Enter text to analyze...">
+This privacy policy explains how we collect and use your personal information. We may share your data with third-party partners for marketing purposes. By using our service, you agree to these terms. We cannot guarantee the security of your information. This service is provided as-is without warranty.
+        </textarea>
+        <br>
+        <button onclick="testAnalysis()" id="test-btn">Test Analysis</button>
+        <button onclick="clearLogs()">Clear Logs</button>
+        <div id="analysis-result" class="status" style="display: none;"></div>
+    </div>
+
+    <div class="test-container">
+        <h3>📝 Console Logs</h3>
+        <div id="console-log" class="log">
+            Ready to test models...
+        </div>
+    </div>
+
+    <script>
+        let extensionId = null;
+        let logCount = 0;
+
+        function log(message, type = 'info') {
+            const logElement = document.getElementById('console-log');
+            const timestamp = new Date().toLocaleTimeString();
+            const logClass = type === 'error' ? 'color: red' : type === 'success' ? 'color: green' : 'color: black';
+            
+            logCount++;
+            logElement.innerHTML += `<div style="${logClass}">[${timestamp}] ${message}</div>`;
+            logElement.scrollTop = logElement.scrollHeight;
+            
+            // Keep only last 100 logs
+            if (logCount > 100) {
+                const lines = logElement.innerHTML.split('<div');
+                logElement.innerHTML = '<div' + lines.slice(-99).join('<div');
+                logCount = 99;
+            }
+        }
+
+        function updateStatus(elementId, message, type) {
+            const element = document.getElementById(elementId);
+            element.textContent = message;
+            element.className = `status ${type}`;
+        }
+
+        async function checkExtension() {
+            log('Checking for Terms AI Extension...');
+            
+            try {
+                // Try to find the extension
+                const extensions = await chrome.management.getAll();
+                const termsExtension = extensions.find(ext => 
+                    ext.name.toLowerCase().includes('terms') || 
+                    ext.name.toLowerCase().includes('ai') ||
+                    ext.id === 'your-extension-id'
+                );
+
+                if (termsExtension) {
+                    extensionId = termsExtension.id;
+                    updateStatus('extension-status', `Extension found: ${termsExtension.name} (${termsExtension.enabled ? 'Enabled' : 'Disabled'})`, 
+                                termsExtension.enabled ? 'success' : 'error');
+                    log(`Found extension: ${termsExtension.name} - ID: ${extensionId}`, 'success');
+                } else {
+                    updateStatus('extension-status', 'Terms AI Extension not found', 'error');
+                    log('Extension not found. Make sure it\'s installed and enabled.', 'error');
+                }
+            } catch (error) {
+                updateStatus('extension-status', 'Error checking extension', 'error');
+                log(`Error: ${error.message}`, 'error');
+            }
+        }
+
+        async function reloadExtension() {
+            if (!extensionId) {
+                log('No extension ID found. Check extension first.', 'error');
+                return;
+            }
+
+            try {
+                log('Reloading extension...');
+                await chrome.management.setEnabled(extensionId, false);
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                await chrome.management.setEnabled(extensionId, true);
+                log('Extension reloaded successfully!', 'success');
+                
+                // Wait a bit then check models
+                setTimeout(checkModelStatus, 2000);
+            } catch (error) {
+                log(`Reload error: ${error.message}`, 'error');
+            }
+        }
+
+        async function initializeModels() {
+            log('Requesting model initialization...');
+            updateStatus('model-status', 'Initializing models...', 'loading');
+            
+            try {
+                // Send message to background script to initialize models
+                const response = await chrome.runtime.sendMessage({
+                    type: 'INITIALIZE_MODELS'
+                });
+                
+                log(`Initialization response: ${JSON.stringify(response)}`, 'success');
+                
+                // Start checking progress
+                checkModelProgress();
+                
+            } catch (error) {
+                log(`Initialization error: ${error.message}`, 'error');
+                updateStatus('model-status', 'Failed to initialize models', 'error');
+            }
+        }
+
+        async function checkModelStatus() {
+            log('Checking model status...');
+            
+            try {
+                const response = await chrome.runtime.sendMessage({
+                    type: 'CHECK_ML_STATUS'
+                });
+                
+                log(`Model status: ${JSON.stringify(response)}`, 'info');
+                
+                if (response && response.status === 'ready') {
+                    updateStatus('model-status', 'Models ready!', 'success');
+                    document.getElementById('progress-bar').style.width = '100%';
+                    document.getElementById('test-btn').disabled = false;
+                } else if (response && response.status === 'loading') {
+                    updateStatus('model-status', 'Models loading...', 'loading');
+                    document.getElementById('test-btn').disabled = true;
+                } else {
+                    updateStatus('model-status', 'Models not initialized', 'error');
+                    document.getElementById('test-btn').disabled = true;
+                }
+                
+            } catch (error) {
+                log(`Status check error: ${error.message}`, 'error');
+                updateStatus('model-status', 'Error checking status', 'error');
+            }
+        }
+
+        function checkModelProgress() {
+            const progressInterval = setInterval(async () => {
+                try {
+                    const response = await chrome.runtime.sendMessage({
+                        type: 'CHECK_ML_STATUS'
+                    });
+                    
+                    if (response && response.status === 'ready') {
+                        clearInterval(progressInterval);
+                        updateStatus('model-status', 'Models ready!', 'success');
+                        document.getElementById('progress-bar').style.width = '100%';
+                        log('All models loaded successfully!', 'success');
+                    } else if (response && response.progress) {
+                        const progress = Math.min(100, response.progress);
+                        document.getElementById('progress-bar').style.width = `${progress}%`;
+                        log(`Model loading progress: ${progress}%`);
+                    }
+                } catch (error) {
+                    clearInterval(progressInterval);
+                    log(`Progress check error: ${error.message}`, 'error');
+                }
+            }, 2000);
+            
+            // Stop checking after 5 minutes
+            setTimeout(() => clearInterval(progressInterval), 300000);
+        }
+
+        async function testAnalysis() {
+            const text = document.getElementById('test-text').value.trim();
+            if (!text) {
+                log('Please enter some text to analyze', 'error');
+                return;
+            }
+            
+            log('Starting analysis test...');
+            updateStatus('analysis-result', 'Analyzing...', 'loading');
+            document.getElementById('analysis-result').style.display = 'block';
+            
+            try {
+                const response = await chrome.runtime.sendMessage({
+                    type: 'ANALYZE_TEXT_ML',
+                    data: {
+                        text: text,
+                        url: 'test.com'
+                    }
+                });
+                
+                if (response && response.success) {
+                    updateStatus('analysis-result', 'Analysis completed!', 'success');
+                    log('Analysis successful:', 'success');
+                    log(`Summary: ${response.analysis.summary}`);
+                    log(`Risk Level: ${response.analysis.riskLevel}`);
+                    log(`Top Emotions: ${JSON.stringify(response.analysis.allEmotions?.slice(0, 3))}`);
+                } else {
+                    updateStatus('analysis-result', `Analysis failed: ${response.error}`, 'error');
+                    log(`Analysis failed: ${response.error}`, 'error');
+                }
+                
+            } catch (error) {
+                updateStatus('analysis-result', 'Analysis error', 'error');
+                log(`Analysis error: ${error.message}`, 'error');
+            }
+        }
+
+        function clearLogs() {
+            document.getElementById('console-log').innerHTML = 'Logs cleared...';
+            logCount = 0;
+        }
+
+        // Auto-check on load
+        document.addEventListener('DOMContentLoaded', () => {
+            log('Test suite loaded. Checking extension...');
+            checkExtension();
+            setTimeout(checkModelStatus, 1000);
+        });
+
+        // Listen for console messages from background script
+        if (chrome.runtime) {
+            chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+                if (message.type === 'CONSOLE_LOG') {
+                    log(`[Background] ${message.message}`, message.level || 'info');
+                }
+            });
+        }
+    </script>
+</body>
+</html>

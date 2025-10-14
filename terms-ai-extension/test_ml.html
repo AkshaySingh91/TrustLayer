@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Local AI Legal Assistant</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .test-content {
+            background: #f5f5f5;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        h1 { color: #333; }
+        h2 { color: #666; }
+        .legal-text {
+            font-size: 14px;
+            color: #444;
+        }
+    </style>
+</head>
+<body>
+    <h1>Terms of Service Test Page</h1>
+    <h2>Privacy Policy</h2>
+    
+    <div class="test-content">
+        <div class="legal-text">
+            <h3>1. Data Collection and Usage</h3>
+            <p>We collect personal information including your name, email address, and browsing behavior. 
+            This data may be shared with third parties for marketing purposes. We use cookies to track 
+            your activity across websites and may sell your information to advertising partners.</p>
+            
+            <h3>2. Account Termination</h3>
+            <p>We reserve the right to terminate your account at any time without prior notice for any 
+            reason or no reason. Upon termination, you will lose access to all content and data 
+            associated with your account.</p>
+            
+            <h3>3. Liability and Warranties</h3>
+            <p>Our company shall not be responsible for any damages, losses, or injuries arising from 
+            the use of our service. We provide the service "as is" without any warranties. You agree 
+            to indemnify us against any claims or damages.</p>
+            
+            <h3>4. Automatic Billing</h3>
+            <p>By agreeing to these terms, you authorize us to automatically charge your payment method 
+            for recurring subscriptions. These charges will continue until you cancel, and cancellation 
+            requires 30 days advance notice.</p>
+            
+            <h3>5. User Rights</h3>
+            <p>You have the right to access your personal data and request deletion. However, we may 
+            retain certain information for business purposes even after deletion requests. You can 
+            opt-out of marketing communications but cannot opt-out of service-related emails.</p>
+            
+            <h3>6. Changes to Terms</h3>
+            <p>We may modify these terms at any time without notice. Continued use of the service 
+            constitutes acceptance of new terms. It is your responsibility to regularly check for 
+            updates to these terms.</p>
+        </div>
+    </div>
+    
+    <div class="test-content">
+        <h3>🤖 Testing Instructions</h3>
+        <ol>
+            <li>Load the Local AI Legal Assistant extension</li>
+            <li>Refresh this page</li>
+            <li>Wait for the "Legal Document Detected!" button to appear</li>
+            <li>Click the button to test the local AI analysis</li>
+            <li>Check browser console for model loading progress</li>
+        </ol>
+        
+        <p><strong>Expected Results:</strong></p>
+        <ul>
+            <li>Models should download on first use (may take 1-2 minutes)</li>
+            <li>No more "Failed to fetch" errors</li>
+            <li>Progress should show percentages, not NaN%</li>
+            <li>AI analysis should complete successfully</li>
+            <li>Risk assessment should identify high-risk clauses</li>
+        </ul>
+    </div>
+</body>
+</html>

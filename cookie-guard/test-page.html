@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cookie Guard Test Page</title>
+</head>
+<body>
+    <h1>Cookie Guard Extension Test</h1>
+    <p>This page will set some test cookies to verify the Cookie Guard extension is working.</p>
+    
+    <button id="setCookies">Set Test Cookies</button>
+    <button id="showCookies">Show Current Cookies</button>
+    <div id="cookieList"></div>
+
+    <script>
+        // Set some test cookies
+        document.getElementById('setCookies').addEventListener('click', () => {
+            document.cookie = "test_session=abc123; path=/";
+            document.cookie = "_ga=analytics_cookie; path=/";
+            document.cookie = "marketing_ad=ad_tracking; path=/";
+            document.cookie = "essential_auth=user_auth_token; path=/";
+            document.cookie = "shopping_cart=item123; path=/";
+            alert('Test cookies have been set!');
+        });
+
+        // Show current cookies
+        document.getElementById('showCookies').addEventListener('click', () => {
+            const cookies = document.cookie.split(';');
+            const list = document.getElementById('cookieList');
+            list.innerHTML = '<h3>Current Cookies:</h3>';
+            cookies.forEach(cookie => {
+                if (cookie.trim()) {
+                    list.innerHTML += '<div>' + cookie.trim() + '</div>';
+                }
+            });
+        });
+
+        // Automatically set some cookies on page load
+        document.cookie = "page_load=true; path=/";
+        document.cookie = "_test_ga=GA1.2.123456789; path=/";
+    </script>
+</body>
+</html>

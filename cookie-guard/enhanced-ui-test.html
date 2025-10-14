@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enhanced Cookie Guard UI Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+        }
+        .test-container {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .cookie-info {
+            background: #f8fafc;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            border-left: 4px solid #3b82f6;
+        }
+        .instructions {
+            background: #fef3c7;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #f59e0b;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>🍪 Enhanced Cookie Guard UI Test</h1>
+        <div class="instructions">
+            <h3>📋 Testing Instructions</h3>
+            <ol>
+                <li>Open Cookie Guard extension popup</li>
+                <li>Click "Scan Current Page" to analyze cookies</li>
+                <li>Observe the enhanced UI features:
+                    <ul>
+                        <li>Risk score bars (0-100 scale)</li>
+                        <li>Detailed risk breakdowns</li>
+                        <li>Risk methodology explanation</li>
+                        <li>Enhanced visual design</li>
+                    </ul>
+                </li>
+                <li>Click the ℹ️ button to see how risks are calculated</li>
+                <li>Expand cookie details to see comprehensive analysis</li>
+            </ol>
+        </div>
+    </div>
+
+    <div class="test-container">
+        <h2>🧪 Test Cookies Set</h2>
+        <div id="cookie-status">Setting up test cookies...</div>
+    </div>
+
+    <div class="test-container">
+        <h2>🎯 Expected Risk Calculations</h2>
+        <div class="cookie-info">
+            <strong>_ga (Google Analytics)</strong>
+            <ul>
+                <li><strong>Tracking Risk:</strong> High (75-85) - Cross-site analytics tracking</li>
+                <li><strong>Persistence Risk:</strong> High (80) - Long-term storage (2 years)</li>
+                <li><strong>Authentication Risk:</strong> Low (10) - No login credentials</li>
+                <li><strong>Security Risk:</strong> Medium (40) - Missing security flags</li>
+                <li><strong>Data Exposure Risk:</strong> Medium (30) - Contains user identifier</li>
+                <li><strong>Expected Total:</strong> ~60-70 (Medium-High Risk)</li>
+            </ul>
+        </div>
+
+        <div class="cookie-info">
+            <strong>sessionid (Session Cookie)</strong>
+            <ul>
+                <li><strong>Authentication Risk:</strong> Critical (95) - Session hijacking potential</li>
+                <li><strong>Tracking Risk:</strong> Low (15) - Not for tracking</li>
+                <li><strong>Persistence Risk:</strong> Low (20) - Session only</li>
+                <li><strong>Security Risk:</strong> Low (10) - Has security flags</li>
+                <li><strong>Data Exposure Risk:</strong> High (70) - Contains session token</li>
+                <li><strong>Expected Total:</strong> ~75-85 (High-Critical Risk)</li>
+            </ul>
+        </div>
+
+        <div class="cookie-info">
+            <strong>_csrf_token (CSRF Protection)</strong>
+            <ul>
+                <li><strong>Authentication Risk:</strong> Medium (40) - Security mechanism</li>
+                <li><strong>Tracking Risk:</strong> Low (5) - Not for tracking</li>
+                <li><strong>Persistence Risk:</strong> Low (20) - Session-based</li>
+                <li><strong>Security Risk:</strong> Low (5) - Has all security flags</li>
+                <li><strong>Data Exposure Risk:</strong> Medium (35) - Security token</li>
+                <li><strong>Expected Total:</strong> ~25-35 (Low-Medium Risk)</li>
+            </ul>
+        </div>
+
+        <div class="cookie-info">
+            <strong>user_pref (User Preferences)</strong>
+            <ul>
+                <li><strong>Authentication Risk:</strong> Low (5) - No credentials</li>
+                <li><strong>Tracking Risk:</strong> Low (20) - Minimal tracking</li>
+                <li><strong>Persistence Risk:</strong> Medium (50) - Long-term preferences</li>
+                <li><strong>Security Risk:</strong> Medium (40) - Basic flags only</li>
+                <li><strong>Data Exposure Risk:</strong> Low (15) - Simple preferences</li>
+                <li><strong>Expected Total:</strong> ~20-30 (Low Risk)</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="test-container">
+        <h2>🎨 UI Enhancement Features</h2>
+        <ul>
+            <li><strong>Risk Score Visualization:</strong> Horizontal progress bars showing 0-100 scores</li>
+            <li><strong>Color-Coded Risk Levels:</strong> Critical (Red), High (Orange), Medium (Yellow), Low (Green)</li>
+            <li><strong>Detailed Risk Breakdown:</strong> Individual factor scores with explanations</li>
+            <li><strong>Risk Methodology Modal:</strong> Click ℹ️ to understand how we calculate risks</li>
+            <li><strong>Enhanced Visual Design:</strong> Better spacing, typography, and visual hierarchy</li>
+            <li><strong>Educational Tooltips:</strong> Clear explanations of each risk factor</li>
+        </ul>
+    </div>
+
+    <script>
+        // Set comprehensive test cookies with various risk profiles
+        const testCookies = [
+            // High-risk tracking cookie
+            { name: '_ga', value: 'GA1.2.1234567890.1638360000', domain: '.example.com', path: '/', expires: 'Fri, 31 Dec 2025 23:59:59 GMT' },
+            
+            // Critical authentication cookie
+            { name: 'sessionid', value: 'abc123xyz789def456ghi789jkl012', domain: 'example.com', path: '/', secure: true, httpOnly: true },
+            
+            // Medium-risk user preferences
+            { name: 'user_pref', value: 'theme:dark,lang:en,notifications:true', domain: 'example.com', path: '/', expires: 'Fri, 31 Dec 2024 23:59:59 GMT' },
+            
+            // Low-risk CSRF protection (beneficial)
+            { name: '_csrf_token', value: 'xyz789abc123def456ghi789jkl012mno345', domain: 'example.com', path: '/', secure: true, httpOnly: true, sameSite: 'strict' },
+            
+            // High-risk third-party tracker
+            { name: 'tracking_pixel', value: '12345-67890-abcdef', domain: '.ads.example.com', path: '/' },
+            
+            // Medium-risk login attempt counter
+            { name: 'login_attempt_count', value: '3', domain: 'example.com', path: '/login', secure: true, httpOnly: true },
+            
+            // Low-risk functional cookie
+            { name: 'cookie_consent', value: 'accepted', domain: 'example.com', path: '/', expires: 'Fri, 31 Dec 2024 23:59:59 GMT' }
+        ];
+
+        // Set cookies for testing
+        testCookies.forEach(cookie => {
+            let cookieString = `${cookie.name}=${cookie.value}`;
+            if (cookie.path) cookieString += `; path=${cookie.path}`;
+            if (cookie.domain) cookieString += `; domain=${cookie.domain}`;
+            if (cookie.expires) cookieString += `; expires=${cookie.expires}`;
+            if (cookie.secure) cookieString += `; secure`;
+            if (cookie.httpOnly) cookieString += `; httponly`;
+            if (cookie.sameSite) cookieString += `; samesite=${cookie.sameSite}`;
+            
+            document.cookie = cookieString;
+        });
+
+        // Update status
+        document.getElementById('cookie-status').innerHTML = `
+            <div style="color: #059669; font-weight: bold;">✅ ${testCookies.length} test cookies successfully set!</div>
+            <p style="margin-top: 10px; font-size: 14px;">
+                Open the Cookie Guard extension and click "Scan Current Page" to see the enhanced UI with:
+            </p>
+            <ul style="margin-top: 5px; font-size: 13px;">
+                <li>🎯 Quantitative risk scores (0-100 scale)</li>
+                <li>📊 Visual risk bars and breakdowns</li>
+                <li>🧮 Risk calculation methodology</li>
+                <li>🎨 Enhanced visual design and typography</li>
+            </ul>
+        `;
+
+        console.log("🍪 Enhanced Cookie Guard UI test cookies set successfully!");
+        console.log("📊 Expected to see improved risk visualization and detailed breakdowns");
+    </script>
+</body>
+</html>
