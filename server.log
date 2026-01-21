@@ -1,0 +1,48 @@
+INFO:     Started server process [83162]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+Loading Qwen/Qwen2.5-1.5B-Instruct...
+-> Analyzing: _dd_s @ www.scribd.com
+INFO:     127.0.0.1:61425 - "POST /analyze HTTP/1.1" 200 OK
+-> Analyzing: _dd_s @ www.scribd.com
+INFO:     127.0.0.1:61425 - "POST /analyze HTTP/1.1" 200 OK
+-> Analyzing: _dd_s @ www.scribd.com
+INFO:     127.0.0.1:61425 - "POST /analyze HTTP/1.1" 200 OK
+-> Analyzing: _dd_s @ www.scribd.com
+INFO:     127.0.0.1:61425 - "POST /analyze HTTP/1.1" 200 OK
+`torch_dtype` is deprecated! Use `dtype` instead!
+Model loaded successfully in 4.85s.
+-> Analyzing: SIDCC @ .google.com
+-> Analyzing: __Secure-1PSIDCC @ .google.com
+-> Analyzing: __Secure-3PSIDCC @ .google.com
+INFO:     127.0.0.1:61473 - "GET /health?ts=1769030394307 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61473 - "GET /health?ts=1769030396358 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61427 - "POST /analyze HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61427 - "GET /health?ts=1769030398629 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61427 - "GET /health?ts=1769030400766 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61427 - "GET /health?ts=1769030402521 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61462 - "POST /analyze HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61462 - "GET /health?ts=1769030404292 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61462 - "GET /health?ts=1769030406003 HTTP/1.1" 200 OK
+-> Analyzing: m @ m.stripe.com
+INFO:     127.0.0.1:61538 - "GET /health?ts=1769030408238 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61538 - "GET /health?ts=1769030409991 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61538 - "GET /health?ts=1769030410568 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61538 - "GET /health?ts=1769030412752 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61538 - "GET /health?ts=1769030414757 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61538 - "GET /health?ts=1769030418577 HTTP/1.1" 200 OK
+-> Analyzing: _dd_s @ www.scribd.com
+-> Analyzing: _dd_s @ www.scribd.com
+-> Analyzing: _dd_s @ www.scribd.com
+-> Analyzing: _dd_s @ www.scribd.com
+-> Analyzing: _dd_s @ www.scribd.com
+-> Analyzing: _dd_s @ www.scribd.com
+INFO:     127.0.0.1:61538 - "POST /analyze HTTP/1.1" 200 OK
+-> Analyzing: _dd_s @ www.scribd.com
+INFO:     127.0.0.1:61580 - "POST /analyze HTTP/1.1" 200 OK
+-> Analyzing: _dd_s @ www.scribd.com
+INFO:     127.0.0.1:61582 - "POST /analyze HTTP/1.1" 200 OK
+-> Analyzing: _dd_s @ www.scribd.com
+INFO:     127.0.0.1:61584 - "POST /analyze HTTP/1.1" 200 OK
+-> Analyzing: _dd_s @ www.scribd.com

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TrustLayer</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <header>
+        <div class="header-top">
+            <h1>TrustLayer</h1>
+            <div id="trust-grade" class="trust-grade-badge hidden">
+                <span id="grade-letter">-</span>
+            </div>
+            <span class="status-badge">Active</span>
+        </div>
+        <div class="tabs">
+            <button class="tab-btn active" data-tab="cookies">Cookies</button>
+            <button class="tab-btn" data-tab="terms">Terms & Conditions</button>
+        </div>
+    </header>
+
+    <main id="cookies-view" class="view-active">
+        <div id="stats-container">
+            <div class="stat-box">
+                <span id="total-cookies">0</span>
+                <label>Analyzed</label>
+            </div>
+            <div class="stat-box">
+                <span id="high-risk">0</span>
+                <label>High Risk</label>
+            </div>
+        </div>
+
+        <div id="analysis-controls" class="analysis-controls">
+            <button id="btn-analyze-cookies" class="btn-primary" style="display: none;">
+                Analyze Cookies
+            </button>
+            <div id="analysis-progress" class="progress-bar-container" style="display: none;">
+                <div class="progress-bar-fill" id="cookie-progress-fill"></div>
+                <span id="cookie-progress-text">0/0</span>
+            </div>
+        </div>
+
+        <div id="cookie-list" class="cookie-list">
+            <div class="loading">Loading cookies...</div>
+        </div>
+    </main>
+
+    <main id="terms-view" class="view-hidden">
+        <div id="terms-discovery">
+            <p style="font-size:13px; color:var(--text-secondary); margin-bottom:16px;">
+                Scan this page for legal documents (Privacy Policy, Terms of Service) to analyze their risk.
+            </p>
+            <button id="scan-terms-btn" class="primary-btn">Scan for Legal Pages</button>
+            <div id="terms-links-list"></div>
+        </div>
+
+        <div id="terms-progress" class="hidden" style="text-align:center; padding:20px;">
+            <div class="loader"></div>
+            <p style="margin-top:10px; font-size:13px;">Analyzing document...</p>
+            <div class="progress-bar-bg"
+                style="background: var(--surface-hover); height: 6px; border-radius:3px; margin-top:10px;">
+                <div id="progress-fill" class="progress-bar-fill"></div>
+            </div>
+            <div id="progress-text" style="font-size:11px; margin-top:4px; color:var(--text-secondary);">0%</div>
+        </div>
+
+        <div id="terms-result" class="hidden">
+            <!-- Result card injected here -->
+        </div>
+    </main>
+
+    <script type="module" src="popup.js"></script>
+</body>
+
+</html>
