@@ -46,6 +46,29 @@ export class CookieManager {
         // 3. NO AUTO ANALYSIS - User must trigger it
     }
 
+    async syncCookies(browserCookies) {
+        if (!browserCookies) return;
+
+        // Parallelize checks for speed
+        await Promise.all(browserCookies.map(async (cookie) => {
+            const cookieId = this.generateCookieId(cookie);
+            const existing = await this.storage.getCookie(cookieId);
+
+            if (!existing) {
+                // New cookie found during sync
+                const metadata = this.extractMetadata(cookie);
+                const record = {
+                    id: cookieId,
+                    raw: metadata,
+                    analysis: null,
+                    timestamp: Date.now(),
+                    userAction: 'allow'
+                };
+                await this.storage.saveCookie(record);
+            }
+        }));
+    }
+
     safeSendMessage(message) {
         try {
             chrome.runtime.sendMessage(message).catch(() => { });

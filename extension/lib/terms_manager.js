@@ -146,28 +146,39 @@ export class TermsManager {
         this.isAnalyzing = true;
         this.progressCallback = onProgress;
 
+        // 1. Set Persistent State: Analyzing
+        await this.storage.setAnalysisState(domain, 'analyzing', 0);
+
         try {
-            // Check Cache first? Maybe.
+            // Check Cache first
             const cached = await this.storage.getTermsAnalysis(domain, type);
-            if (cached) return cached;
+            if (cached) {
+                await this.storage.setAnalysisState(domain, 'completed', 100);
+                return cached;
+            }
 
             const chunks = this.chunkText(text);
             if (chunks.length === 0) throw new Error("No content extracted");
 
-            const results = await this._processChunks(chunks);
+            const results = await this._processChunks(chunks, domain);
             const finalResult = this.aggregateResults(results, domain, type, "current_tab");
             await this.storage.saveTermsAnalysis(finalResult);
+
+            // 2. Set Persistent State: Completed
+            await this.storage.setAnalysisState(domain, 'completed', 100);
             return finalResult;
+        } catch (e) {
+            // 3. Set Persistent State: Error
+            await this.storage.setAnalysisState(domain, 'error', 0, e.message);
+            throw e;
         } finally {
             this.isAnalyzing = false;
         }
     }
 
-    async _processChunks(chunks) {
+    async _processChunks(chunks, domain) {
         const results = [];
         for (let i = 0; i < chunks.length; i++) {
-            if (this.progressCallback) this.progressCallback(i + 1, chunks.length);
-
             const response = await fetch(this.endpoint, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -177,6 +188,14 @@ export class TermsManager {
             if (response.ok) {
                 const data = await response.json();
                 results.push(data);
+
+                // Report progress only after success
+                if (this.progressCallback) this.progressCallback(i + 1, chunks.length);
+
+                // Update Persistent Progress
+                if (domain) {
+                    await this.storage.setAnalysisState(domain, 'analyzing', (i + 1) / chunks.length);
+                }
             }
         }
         return results;

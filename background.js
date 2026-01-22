@@ -33,29 +33,50 @@ chrome.cookies.onChanged.addListener((changeInfo) => {
 // Listen for messages from popup
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     if (request.action === 'getCookies') {
-        // Return cached analyses or fetch fresh
-        storage.getAllCookies()
-            .then(cookies => {
-                if (request.url) {
-                    // Simple domain check
+        if (request.url) {
+            // 1. Sync with browser cookies for this URL
+            try {
+                chrome.cookies.getAll({ url: request.url }, async (browserCookies) => {
                     try {
-                        const urlObj = new URL(request.url);
-                        const hostname = urlObj.hostname;
-                        const filtered = cookies.filter(c => {
-                            if (!c.raw || !c.raw.domain) return false;
-                            const cDomain = c.raw.domain.startsWith('.') ? c.raw.domain.slice(1) : c.raw.domain;
-                            // match: hostname ends with cookie domain (e.g. mail.google.com ends with google.com)
-                            return hostname.endsWith(cDomain) || cDomain.endsWith(hostname);
-                        });
-                        return filtered;
-                    } catch (e) {
-                        return cookies;
+                        if (browserCookies) {
+                            await cookieManager.syncCookies(browserCookies);
+                        }
+                    } catch (err) {
+                        console.error("Cookie Sync Error:", err);
                     }
-                }
-                return cookies;
-            })
-            .then(sendResponse);
-        return true; // async response
+
+                    // 2. Return cached analyses
+                    storage.getAllCookies()
+                        .then(cookies => {
+                            // Simple domain check filter
+                            try {
+                                const urlObj = new URL(request.url);
+                                const hostname = urlObj.hostname;
+                                const filtered = cookies.filter(c => {
+                                    if (!c.raw || !c.raw.domain) return false;
+                                    const cDomain = c.raw.domain.startsWith('.') ? c.raw.domain.slice(1) : c.raw.domain;
+                                    return hostname.endsWith(cDomain) || cDomain.endsWith(hostname);
+                                });
+                                sendResponse(filtered);
+                            } catch (e) {
+                                sendResponse(cookies);
+                            }
+                        })
+                        .catch(err => {
+                            console.error("Storage Error:", err);
+                            sendResponse([]);
+                        });
+                });
+            } catch (e) {
+                console.error("Cookie Fetch Error:", e);
+                storage.getAllCookies().then(sendResponse);
+            }
+            return true; // async response
+        }
+
+        // Fallback for no URL (all cookies)
+        storage.getAllCookies().then(sendResponse);
+        return true;
     }
 
     if (request.action === 'updateCookieStatus') {
@@ -116,20 +137,29 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
             } catch (e) { }
         })
             .then(result => sendResponse({ result }))
-            .catch(err => sendResponse({ error: err.message }));
+            .catch(err => {
+                console.error("Terms Analysis Error:", err);
+                sendResponse({ error: err.message });
+            });
         return true;
     }
 
     // Global Trust Score: Fetch cached T&C risk
     if (request.action === 'get_terms_risk') {
-        // user might have analyzed terms OR privacy. Return max risk found.
+        // user might have analyzed terms OR privacy OR manual. Return max risk found.
         Promise.all([
             storage.getTermsAnalysis(request.domain, 'terms'),
-            storage.getTermsAnalysis(request.domain, 'privacy')
-        ]).then(([t, p]) => {
-            let score = undefined;
-            if (t) score = t.risk_score;
-            if (p) score = Math.max(score || 0, p.risk_score);
+            storage.getTermsAnalysis(request.domain, 'privacy'),
+            storage.getTermsAnalysis(request.domain, 'manual_selection')
+        ]).then(([t, p, m]) => {
+            let score = 0;
+            if (t) score = Math.max(score, t.risk_score || 0);
+            if (p) score = Math.max(score, p.risk_score || 0);
+            if (m) score = Math.max(score, m.risk_score || 0);
+
+            // If all are missing, return undefined to signal 'no analysis'
+            if (!t && !p && !m) score = undefined;
+
             sendResponse({ risk_score: score });
         });
         return true;
@@ -176,6 +206,111 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
                 .catch(err => sendResponse({ error: err.message }));
         });
         return true;
+    }
+
+    if (request.action === 'get_analysis_status') {
+        sendResponse({
+            isAnalyzing: termsManager.isAnalyzing
+        });
+        return true;
+    }
+
+    if (request.action === 'get_term_analysis') {
+        Promise.all([
+            storage.getTermsAnalysis(request.domain, 'terms'),
+            storage.getTermsAnalysis(request.domain, 'manual_selection')
+        ]).then(([terms, manual]) => {
+            if (!terms && !manual) {
+                sendResponse(null);
+                return;
+            }
+            if (terms && !manual) {
+                sendResponse(terms);
+                return;
+            }
+            if (!terms && manual) {
+                sendResponse(manual);
+                return;
+            }
+            // Both exist, return fresher
+            const tTime = terms.timestamp || 0;
+            const mTime = manual.timestamp || 0;
+            sendResponse(tTime > mTime ? terms : manual);
+        });
+        return true;
+    }
+
+    if (request.action === 'get_domain_status') {
+        storage.getAnalysisState(request.domain)
+            .then(state => sendResponse(state || { status: 'idle' }));
+        return true;
+    }
+});
+
+// Context Menu Logic
+chrome.runtime.onInstalled.addListener(() => {
+    chrome.contextMenus.removeAll(() => {
+        chrome.contextMenus.create({
+            id: "analyze-text",
+            title: "Analyze with TrustLayer",
+            contexts: ["selection"]
+        });
+    });
+});
+
+chrome.contextMenus.onClicked.addListener((info, tab) => {
+    if (info.menuItemId === "analyze-text" && info.selectionText) {
+
+        console.log("Context Menu clicked. Text selected:", info.selectionText.substring(0, 50) + "...");
+
+        // Notify User: Analysis Started (Check if API exists)
+        if (chrome.notifications && chrome.notifications.create) {
+            chrome.notifications.create({
+                type: 'basic',
+                iconUrl: 'icons/icon48.png',
+                title: 'TrustLayer Analysis Started',
+                message: 'Analyzing your selection... Open the extension to view results.',
+                priority: 2
+            });
+        } else {
+            console.log("Notifications API not available.");
+        }
+
+        const domain = new URL(tab.url).hostname;
+        termsManager.analyzeText(info.selectionText, domain, 'manual_selection', (current, total) => {
+            console.log(`Analysis Progress: ${current}/${total}`);
+            chrome.runtime.sendMessage({
+                action: 'terms_progress',
+                current: current,
+                total: total
+            }).catch(() => { });
+        }).then((result) => {
+            // successful completion
+            console.log("Analysis Complete:", result);
+            chrome.runtime.sendMessage({
+                action: 'terms_complete',
+                domain: domain,
+                result: result
+            }).catch(() => { });
+
+            // Notification update
+            if (chrome.notifications && chrome.notifications.create) {
+                chrome.notifications.create({
+                    type: 'basic',
+                    iconUrl: 'icons/icon48.png',
+                    title: 'TrustLayer Analysis Complete',
+                    message: `Risk Score: ${result.risk_score}/100. Click to view details.`,
+                    priority: 2
+                });
+            }
+        }).catch(err => {
+            console.error("Analysis Error:", err);
+            chrome.runtime.sendMessage({
+                action: 'terms_error',
+                domain: domain,
+                error: err.message
+            }).catch(() => { });
+        });
     }
 });
 

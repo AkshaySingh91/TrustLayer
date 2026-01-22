@@ -7,7 +7,7 @@ export class StorageManager {
 
     initDB() {
         return new Promise((resolve, reject) => {
-            const request = indexedDB.open(this.dbName, 1);
+            const request = indexedDB.open(this.dbName, 2);
 
             request.onerror = (event) => reject('IndexedDB error: ' + event.target.errorCode);
 
@@ -18,6 +18,9 @@ export class StorageManager {
                 }
                 if (!db.objectStoreNames.contains('terms')) {
                     db.createObjectStore('terms', { keyPath: 'id' });
+                }
+                if (!db.objectStoreNames.contains('analysis_state')) {
+                    db.createObjectStore('analysis_state', { keyPath: 'domain' });
                 }
             };
 
@@ -78,6 +81,28 @@ export class StorageManager {
             const transaction = db.transaction(['terms'], 'readwrite');
             const store = transaction.objectStore('terms');
             store.put(analysis);
+            transaction.oncomplete = () => resolve();
+            transaction.onerror = () => reject(transaction.error);
+        });
+    }
+
+    async getAnalysisState(domain) {
+        const db = await this.dbPromise;
+        return new Promise((resolve) => {
+            const transaction = db.transaction(['analysis_state'], 'readonly');
+            const store = transaction.objectStore('analysis_state');
+            const request = store.get(domain);
+            request.onsuccess = () => resolve(request.result);
+            request.onerror = () => resolve(null);
+        });
+    }
+
+    async setAnalysisState(domain, status, progress = 0, details = null) {
+        const db = await this.dbPromise;
+        return new Promise((resolve, reject) => {
+            const transaction = db.transaction(['analysis_state'], 'readwrite');
+            const store = transaction.objectStore('analysis_state');
+            store.put({ domain, status, progress, details, timestamp: Date.now() });
             transaction.oncomplete = () => resolve();
             transaction.onerror = () => reject(transaction.error);
         });

@@ -7,7 +7,7 @@ export class HealthManager {
         this.onStatusChange = null;
         this.timer = null;
         // Use 127.0.0.1 to avoid potential localhost resolution issues
-        this.endpoint = 'http://127.0.0.1:8000/health';
+        this.endpoint = 'http://localhost:8000/health';
     }
 
     start(onStatusChangeCallback) {
@@ -55,7 +55,7 @@ export class HealthManager {
     async checkEndpoint() {
         try {
             const controller = new AbortController();
-            const timeoutId = setTimeout(() => controller.abort(), 3000); // 3s timeout
+            const timeoutId = setTimeout(() => controller.abort(), 5000); // 5s timeout
 
             const res = await fetch(`${this.endpoint}?ts=${Date.now()}`, { signal: controller.signal });
             clearTimeout(timeoutId);
@@ -65,7 +65,7 @@ export class HealthManager {
                 return { success: true, data };
             }
             return { success: false };
-            return { success: false };
+
         } catch (e) {
             console.warn(`Health Check Failed: ${e.message}`);
             return { success: false };
