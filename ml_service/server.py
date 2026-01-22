@@ -6,7 +6,11 @@ import torch
 import json
 import time
 import asyncio
+import os
 from contextlib import asynccontextmanager
+
+# Enable offline mode to use cached model
+os.environ["HF_HUB_OFFLINE"] = "1"
 
 # Global State
 model = None
@@ -19,14 +23,15 @@ MODEL_NAME = "Qwen/Qwen2.5-1.5B-Instruct"
 
 def load_model_sync():
     global model, tokenizer, model_status, model_load_time
-    print(f"Loading {MODEL_NAME}...")
+    print(f"Loading {MODEL_NAME} (offline mode)...")
     try:
         start_time = time.time()
-        # Load logic
-        tokenizer_obj = AutoTokenizer.from_pretrained(MODEL_NAME, trust_remote_code=True)
+        # Load logic - use local_files_only to avoid network calls
+        tokenizer_obj = AutoTokenizer.from_pretrained(MODEL_NAME, trust_remote_code=True, local_files_only=True)
         model_obj = AutoModelForCausalLM.from_pretrained(
             MODEL_NAME, 
             trust_remote_code=True,
+            local_files_only=True,
             device_map="auto" if torch.backends.mps.is_available() else "cpu", 
             torch_dtype=torch.float16 if torch.backends.mps.is_available() else "auto"
         )
