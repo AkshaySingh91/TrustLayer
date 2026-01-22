@@ -11,8 +11,10 @@ const healthManager = new HealthManager();
 const termsManager = new TermsManager(storage);
 
 // Start Health Monitoring
+console.log("[TrustLayer] Starting Health Manager...");
 healthManager.start((status, data) => {
     // Broadcast health update
+    console.log("[TrustLayer] Health Status Changed:", status);
     try {
         const payload = {
             status: status, // 'online', 'offline', 'unstable', 'starting'
@@ -33,6 +35,7 @@ chrome.cookies.onChanged.addListener((changeInfo) => {
 // Listen for messages from popup
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     if (request.action === 'getCookies') {
+        console.log("[TrustLayer] getCookies request received for:", request.url);
         if (request.url) {
             // 1. Sync with browser cookies for this URL
             try {
@@ -101,6 +104,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 
     // Direct health query (for popup initial load)
     if (request.action === 'getHealth') {
+        console.log("[TrustLayer] getHealth request. Current status:", healthManager.status);
         sendResponse({
             status: healthManager.status,
             details: healthManager.history.length > 0 && healthManager.history[healthManager.history.length - 1].success

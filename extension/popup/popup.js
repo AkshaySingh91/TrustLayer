@@ -395,6 +395,19 @@ document.addEventListener('DOMContentLoaded', async () => {
                 </div>
                 ` : ''}
 
+                <!-- Thermometer Gauge -->
+                <div class="thermometer-container">
+                    <div class="thermometer-label">Risk Level Indicator</div>
+                    <div class="thermometer-track">
+                        <div class="thermometer-pointer" id="thermo-pointer" style="left: ${score}%;"></div>
+                    </div>
+                    <div class="thermometer-scale">
+                        <span>Safe (0)</span>
+                        <span>Medium (50)</span>
+                        <span>High (100)</span>
+                    </div>
+                </div>
+
                 <div style="text-align:center; margin-top:15px; border-top:1px solid rgba(255,255,255,0.05); padding-top:15px;">
                      <button id="reanalyze-btn" class="text-btn" style="font-size:11px; opacity:0.7;">↻ Analyze Again</button>
                 </div>
